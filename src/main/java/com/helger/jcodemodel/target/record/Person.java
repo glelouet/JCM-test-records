@@ -36,14 +36,18 @@ public record Person(String name, String address, int value) {
 		this(name, null, value);
 	}
 
-	// create an instance method that refer to the field used in the cannonic
-	// constructor
+	// create an instance method that refers to the field specified in the
+	// canonical constructor ( name. )
 
 	public String firstName() {
 		return name.split(" ")[0];
 	}
+
+	// create an instance method that refers to the getter deduced from the field
+	// specified in the canonical constructor ( name(). )
+
 	public String familyName() {
-		return Stream.of(name.split(" ")).skip(1).collect(Collectors.joining(" "));
+		return Stream.of(name().split(" ")).skip(1).collect(Collectors.joining(" "));
 	}
 
 	//
@@ -54,8 +58,11 @@ public record Person(String name, String address, int value) {
 	 * have a child with another person
 	 *
 	 * @param other
+	 *          the other parent
 	 * @param name
-	 * @return
+	 *          first name of the child.
+	 * @return a new child, whose address and family name are deduced from the
+	 *         highest value parent.
 	 */
 	public Person childWith(Person other, String name) {
 		Person inherit = value() > other.value || value == other.value && name.compareToIgnoreCase(other.name) < 0 ? this
